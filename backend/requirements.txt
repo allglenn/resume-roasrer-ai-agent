@@ -9,4 +9,5 @@ pydantic[email]==2.5.2
 pydantic-settings==2.1.0
 bcrypt==4.0.1
 python-dotenv==1.0.0
-aiofiles==23.2.1 
+aiofiles==23.2.1
+PyPDF2==3.0.1 

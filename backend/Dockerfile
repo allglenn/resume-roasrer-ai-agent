@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Create uploads directory with proper permissions
+RUN mkdir -p /app/uploads && chown -R nobody:nogroup /app/uploads
+
 # Copy requirements first for better caching
 COPY requirements.txt .
 
@@ -19,8 +22,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
-# Create uploads directory
-RUN mkdir -p /app/uploads && chmod 777 /app/uploads
+# Set proper permissions
+RUN chown -R nobody:nogroup /app
+USER nobody
 
 # Expose port
 EXPOSE 8000
