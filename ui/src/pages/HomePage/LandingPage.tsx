@@ -148,6 +148,45 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-gray-600">
+              Created by{" "}
+              <a
+                href="https://glenn.allinsoftware.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-900 hover:text-gray-700 font-medium"
+              >
+                Glenn Allogho
+              </a>
+            </div>
+            <div className="text-gray-600 flex items-center gap-2">
+              Powered by{" "}
+              <a
+                href="https://www.together.ai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-900 hover:text-gray-700 font-medium"
+              >
+                Together.ai
+              </a>{" "}
+              &{" "}
+              <a
+                href="https://www.deepseek.ai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-900 hover:text-gray-700 font-medium"
+              >
+                DeepSeek R1
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
