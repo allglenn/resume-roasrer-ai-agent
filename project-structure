@@ -1,0 +1,12 @@
+project-root/
+├── ui/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── Dockerfile
+├── api/
+│   ├── app/
+│   ├── requirements.txt
+│   └── Dockerfile
+└── docker-compose.yml 
