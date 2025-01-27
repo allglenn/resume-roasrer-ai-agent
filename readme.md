@@ -1,10 +1,10 @@
 # Resume Roaster AI Agent 🚀
 
-An intelligent web application that helps students craft better resumes through AI-powered feedback using DeepSeek's advanced language model.
+An intelligent web application that helps people craft better resumes through AI-powered feedback using DeepSeek's advanced language model.
 
 ## 🎯 Overview
 
-Resume Roaster is a modern web application that leverages DeepSeek-R1 AI to analyze student resumes and provide actionable feedback. The application helps students improve their resumes by:
+Resume Roaster is a modern web application that leverages DeepSeek-R1 AI to analyze people  resumes and provide actionable feedback. The application helps people improve their resumes by:
 
 - Performing deep analysis of resume content and structure
 - Providing detailed, constructive feedback in real-time

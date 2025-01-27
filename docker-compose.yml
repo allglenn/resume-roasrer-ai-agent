@@ -8,7 +8,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./ui:/app
+      - ./ui/src:/app/src
+      - ./ui/public:/app/public
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true

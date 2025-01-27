@@ -1,7 +1,18 @@
 project-root/
 ├── ui/
 │   ├── src/
+│   │   ├── index.tsx
+│   │   ├── index.css
+│   │   ├── App.tsx
+│   │   ├── App.css
+│   │   └── pages/
+│   │       └── HomePage/
+│   │           ├── LandingPage.tsx
+│   │           └── LandingPage.css
 │   ├── public/
+│   │   ├── index.html
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── Dockerfile
