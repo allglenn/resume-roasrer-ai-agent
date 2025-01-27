@@ -4,6 +4,10 @@ WORKDIR /app
 
 # Copy package files first for better caching
 COPY package*.json ./
+
+# Clean install dependencies
+RUN rm -rf node_modules
+RUN npm cache clean --force
 RUN npm install
 
 # Copy configuration files

@@ -2,25 +2,38 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./ui
-      dockerfile: Dockerfile
+    build: ./ui
     ports:
       - "3000:3000"
     volumes:
-      - ./ui/src:/app/src
-      - ./ui/public:/app/public
+      - ./ui:/app
       - /app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING=true
-    depends_on:
-      - backend
+      - REACT_APP_API_URL=http://localhost:8000/api/v1
 
   backend:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
+    build: ./backend
     ports:
       - "8000:8000"
     volumes:
-      - ./api:/app
+      - ./backend:/app
+      - ./uploads:/app/uploads
+      - /app/__pycache__
+    environment:
+      - TOGETHER_API_KEY=your_together_api_key
+      - DEEPSEEK_API_KEY=your_deepseek_api_key
+      - MONGODB_URL=mongodb://mongo:27017/resume_roaster
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=resume_roaster
+
+volumes:
+  mongodb_data:

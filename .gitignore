@@ -59,6 +59,11 @@ yarn-error.log*
 .env.test
 .env.production
 
+# Uploaded files
+uploads/
+uploads/*
+!uploads/.gitkeep
+
 # Docker
 .docker/
 docker-compose.override.yml
