@@ -14,6 +14,8 @@ const UploadPage: React.FC = () => {
   const [error, setError] = useState<UploadError | null>(null);
   const [dragActive, setDragActive] = useState<boolean>(false);
 
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -59,21 +61,22 @@ const UploadPage: React.FC = () => {
     setSelectedFile(file);
   };
 
-  const handleSubmit = async () => {
-    if (!selectedFile) {
-      setError({ message: "Please select a file" });
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedFile) return;
 
     setIsLoading(true);
     setError(null);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
+    if (careerInterests) {
+      formData.append("career_interests", careerInterests);
+    }
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/files/upload/",
+        `${process.env.REACT_APP_API_URL}/files/upload`,
         {
           method: "POST",
           body: formData,
@@ -81,23 +84,29 @@ const UploadPage: React.FC = () => {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || "Upload failed");
+        throw new Error("Upload failed");
       }
 
       const data = await response.json();
-      // Navigate to results page with the uploaded file ID
-      navigate(`/results/${data.id}`);
+
+      // Navigate to result page with analysis data
+      navigate(`/result/${data.file_id}`, {
+        state: {
+          analysis: data.analysis,
+          filename: data.filename,
+        },
+      });
     } catch (err) {
       setError({
-        message:
-          err instanceof Error
-            ? err.message
-            : "An error occurred during upload",
+        message: err instanceof Error ? err.message : "Failed to upload file",
       });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCardClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -145,9 +154,10 @@ const UploadPage: React.FC = () => {
 
           {/* Upload Box */}
           <div
+            onClick={handleCardClick}
             className={`bg-white rounded-lg border-2 border-dashed ${
               dragActive ? "border-gray-500 bg-gray-50" : "border-gray-300"
-            } p-12 text-center mb-8 animate-fade-in-up relative`}
+            } p-12 text-center mb-8 animate-fade-in-up relative cursor-pointer hover:bg-gray-50 transition-colors`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -181,18 +191,17 @@ const UploadPage: React.FC = () => {
                 </svg>
               </div>
               <div className="text-gray-600">
-                <label className="cursor-pointer hover:text-gray-900 transition-colors">
-                  <span className="text-gray-900 font-medium">
-                    Click to upload
-                  </span>{" "}
-                  or drag and drop
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                  />
-                </label>
+                <span className="text-gray-900 font-medium hover:text-gray-700">
+                  Click to upload
+                </span>{" "}
+                or drag and drop
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                />
               </div>
               <p className="text-sm text-gray-500">PDF up to 10MB</p>
               {selectedFile && (

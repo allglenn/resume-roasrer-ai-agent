@@ -54,10 +54,7 @@ yarn-error.log*
 
 # Local environment files
 .env
-.env.local
-.env.development
-.env.test
-.env.production
+
 
 # Uploaded files
 uploads/

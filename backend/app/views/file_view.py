@@ -1,20 +1,21 @@
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.core.database import get_database
 from app.controllers.file_controller import FileController
 from app.schemas.file_schema import FileResponse
+from typing import Optional
 
 router = APIRouter()
 
 @router.post("/upload/", response_model=FileResponse)
 async def upload_file(
     file: UploadFile = File(...),
+    career_interests: Optional[str] = Form(None),
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """
-    Upload a PDF file with size < 10MB
+    Upload and analyze a PDF resume
     """
-    # For now, using a dummy user_id. In production, get this from auth
-    user_id = "default_user"
+    user_id = "default_user"  # In production, get this from auth
     controller = FileController(db)
-    return await controller.upload_file(file, user_id) 
+    return await controller.upload_file(file, user_id, career_interests) 

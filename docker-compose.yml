@@ -20,9 +20,8 @@ services:
       - ${PWD}/backend/uploads:/app/uploads:rw
       - /app/__pycache__
     environment:
-      - TOGETHER_API_KEY=your_together_api_key
-      - DEEPSEEK_API_KEY=your_deepseek_api_key
       - MONGODB_URL=mongodb://mongo:27017/resume_roaster
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
     user: "${UID}:${GID}"
     depends_on:
       - mongo
