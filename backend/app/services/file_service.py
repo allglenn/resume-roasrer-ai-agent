@@ -172,4 +172,16 @@ class FileService:
             raise HTTPException(
                 status_code=500,
                 detail=f"Error analyzing resume: {str(e)}"
-            ) 
+            )
+
+    async def get_file_path(self, file_id: ObjectId) -> str:
+        """Get file path from database"""
+        file_doc = await self.collection.find_one({"_id": file_id})
+        if not file_doc:
+            raise Exception("File not found")
+            
+        file_path = file_doc.get("file_path")
+        if not file_path or not os.path.exists(file_path):
+            raise Exception("File not found on disk")
+            
+        return file_path 

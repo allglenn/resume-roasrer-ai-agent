@@ -31,11 +31,27 @@ const ResultPage: React.FC = () => {
   const state = location.state as LocationState;
   const { fileId } = useParams();
   const [pdfUrl, setPdfUrl] = useState<string>("");
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
 
   useEffect(() => {
     if (fileId) {
-      setPdfUrl(`${process.env.REACT_APP_API_URL}/files/${fileId}/view`);
+      fetch(`${process.env.REACT_APP_API_URL}/files/${fileId}/view`)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          setPdfUrl(url);
+          setPdfBlob(blob);
+        })
+        .catch((error) => {
+          console.error("Error loading PDF:", error);
+        });
     }
+    // Cleanup
+    return () => {
+      if (pdfUrl) {
+        window.URL.revokeObjectURL(pdfUrl);
+      }
+    };
   }, [fileId]);
 
   if (!state?.analysis) {
@@ -111,11 +127,39 @@ const ResultPage: React.FC = () => {
                   Resume: {filename}
                 </h2>
                 <div className="h-[800px]">
-                  <iframe
-                    src={pdfUrl}
-                    className="w-full h-full border-0"
-                    title="Resume PDF"
-                  />
+                  {pdfUrl && (
+                    <>
+                      <object
+                        data={pdfUrl}
+                        type="application/pdf"
+                        className="w-full h-full"
+                      >
+                        <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg">
+                          <div className="text-center">
+                            <p className="text-gray-600 mb-4">
+                              Unable to display PDF directly.
+                            </p>
+                            <a
+                              href={pdfUrl}
+                              download={filename}
+                              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            >
+                              Download PDF
+                            </a>
+                          </div>
+                        </div>
+                      </object>
+                      <div className="mt-4 text-center">
+                        <a
+                          href={pdfUrl}
+                          download={filename}
+                          className="text-blue-600 hover:text-blue-800 underline"
+                        >
+                          Download PDF
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

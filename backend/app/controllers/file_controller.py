@@ -2,6 +2,7 @@ from fastapi import HTTPException, UploadFile
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.services.file_service import FileService
 from typing import Optional
+from bson import ObjectId
 
 class FileController:
     def __init__(self, db: AsyncIOMotorDatabase):
@@ -13,5 +14,15 @@ class FileController:
         except Exception as e:
             raise HTTPException(
                 status_code=400,
+                detail=str(e)
+            )
+
+    async def get_file_path(self, file_id: str) -> str:
+        """Get file path for viewing/downloading"""
+        try:
+            return await self.service.get_file_path(ObjectId(file_id))
+        except Exception as e:
+            raise HTTPException(
+                status_code=404,
                 detail=str(e)
             ) 
